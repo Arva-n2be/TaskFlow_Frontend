@@ -1,7 +1,8 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
-import { Folder, Plus, Trash2, Calendar, Clock3, LayoutGrid, AlertTriangle, Pencil, UserPlus, Link as LinkIcon, ExternalLink, X } from 'lucide-react';
+import { AuthContext } from '../context/AuthContext';
+import { Folder, Plus, Trash2, Calendar, Clock3, LayoutGrid, AlertTriangle, Pencil, UserPlus, Link as LinkIcon, ExternalLink, X, LogOut, Crown, Bell, Check, UserMinus } from 'lucide-react';
 
 function formatDate(value) {
     if (!value) return '-';
@@ -14,6 +15,7 @@ function formatDate(value) {
 
 export default function Projects() {
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
     const [projects, setProjects] = useState([]);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -25,6 +27,22 @@ export default function Projects() {
     const [editProjectData, setEditProjectData] = useState({ name: '', description: '', deadline: '' });
     const [inviteState, setInviteState] = useState({ show: false, projectId: null, email: '' });
     const [addLinkState, setAddLinkState] = useState({ show: false, projectId: null, title: '', url: '' });
+    const [projectAlerts, setProjectAlerts] = useState({ invitations: [], notifications: [] });
+    const [leaveConfirm, setLeaveConfirm] = useState({ show: false, project: null });
+
+    const currentUserId = user?.id;
+    const getUserRole = (project) => project.members?.find((member) => Number(member.id) === Number(currentUserId))?.role;
+    const isOwner = (project) => getUserRole(project) === 'owner';
+    const projectMembersOnly = (project) => project.members?.filter((member) => member.role !== 'owner') || [];
+
+    const fetchProjectAlerts = async () => {
+        try {
+            const response = await api.get('/projects/notifications');
+            setProjectAlerts(response.data);
+        } catch (error) {
+            console.error('Gagal mengambil notifikasi project', error);
+        }
+    };
 
     const handleAddLink = async (e) => {
         e.preventDefault();
@@ -56,6 +74,7 @@ export default function Projects() {
         try {
             const res = await api.post(`/projects/${inviteState.projectId}/members`, { email: inviteState.email });
             setInviteState({ show: false, projectId: null, email: '' });
+            fetchProjectAlerts();
             showToast(res.data.message || 'Anggota berhasil diundang!', 'success');
         } catch (error) {
             showToast(error.response?.data?.message || 'Gagal mengundang anggota', 'error');
@@ -78,7 +97,64 @@ export default function Projects() {
 
     useEffect(() => {
         fetchProjects();
+        fetchProjectAlerts();
     }, []);
+
+    const handleInvitationResponse = async (invitationId, action) => {
+        try {
+            const res = await api.post(`/projects/invitations/${invitationId}/respond`, { action });
+            fetchProjects();
+            fetchProjectAlerts();
+            showToast(res.data.message, 'success');
+        } catch (error) {
+            showToast(error.response?.data?.message || 'Gagal memproses undangan', 'error');
+        }
+    };
+
+    const handleReadNotification = async (notificationId) => {
+        try {
+            await api.patch(`/projects/notifications/${notificationId}/read`);
+            fetchProjectAlerts();
+        } catch (error) {
+            showToast(error.response?.data?.message || 'Gagal memperbarui notifikasi', 'error');
+        }
+    };
+
+    const handleKickMember = async (projectId, memberId) => {
+        if (!window.confirm('Keluarkan anggota ini dari project?')) return;
+        try {
+            await api.delete(`/projects/${projectId}/members/${memberId}`);
+            fetchProjects();
+            showToast('Anggota berhasil dikeluarkan.', 'success');
+        } catch (error) {
+            showToast(error.response?.data?.message || 'Gagal mengeluarkan anggota', 'error');
+        }
+    };
+
+    const handleLeaveProject = async (project, ownerAction = null) => {
+        try {
+            const res = await api.post(`/projects/${project.id}/leave`, { ownerAction });
+            setLeaveConfirm({ show: false, project: null });
+            fetchProjects();
+            showToast(res.data.message, 'success');
+        } catch (error) {
+            showToast(error.response?.data?.message || 'Gagal keluar dari project', 'error');
+        }
+    };
+
+    const openLeaveProject = (project) => {
+        if (isOwner(project) && projectMembersOnly(project).length > 0) {
+            setLeaveConfirm({ show: true, project });
+            return;
+        }
+        if (isOwner(project)) {
+            showToast('Owner terakhir tidak bisa keluar tanpa menghapus project atau menambahkan anggota baru.', 'error');
+            return;
+        }
+        if (window.confirm('Keluar dari project ini?')) {
+            handleLeaveProject(project);
+        }
+    };
 
     const handleCreateProject = async (e) => {
         e.preventDefault();
@@ -196,6 +272,41 @@ export default function Projects() {
                 </div>
             </div>
 
+            {(projectAlerts.invitations.length > 0 || projectAlerts.notifications.length > 0) && (
+                <div className="rounded-[24px] border border-blue-100 bg-white p-5 shadow-sm">
+                    <div className="flex items-center gap-2 text-slate-900">
+                        <Bell size={18} className="text-blue-600" />
+                        <h2 className="text-lg font-bold">Notifikasi Project</h2>
+                    </div>
+                    <div className="mt-4 space-y-3">
+                        {projectAlerts.invitations.map((invitation) => (
+                            <div key={invitation.id} className="flex flex-col gap-3 rounded-2xl border border-slate-100 bg-blue-50/50 p-4 sm:flex-row sm:items-center sm:justify-between">
+                                <div>
+                                    <p className="text-sm font-bold text-slate-900">Undangan join project {invitation.project_name}</p>
+                                    <p className="mt-1 text-xs text-slate-600">Dari {invitation.inviter_name} ({invitation.inviter_email})</p>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button onClick={() => handleInvitationResponse(invitation.id, 'reject')} className="inline-flex items-center gap-1 rounded-xl border border-rose-100 bg-white px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50">
+                                        <X size={14} /> Reject
+                                    </button>
+                                    <button onClick={() => handleInvitationResponse(invitation.id, 'accept')} className="inline-flex items-center gap-1 rounded-xl bg-blue-600 px-3 py-2 text-xs font-bold text-white hover:bg-blue-700">
+                                        <Check size={14} /> Accept
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                        {projectAlerts.notifications.map((notification) => (
+                            <div key={notification.id} className="flex flex-col gap-3 rounded-2xl border border-amber-100 bg-amber-50/70 p-4 sm:flex-row sm:items-center sm:justify-between">
+                                <p className="text-sm font-semibold text-slate-800">{notification.message}</p>
+                                <button onClick={() => handleReadNotification(notification.id)} className="inline-flex items-center gap-1 rounded-xl bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">
+                                    <Check size={14} /> Mengerti
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {/* Form Buat Project Baru */}
             <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -276,6 +387,7 @@ export default function Projects() {
                                             <div className="flex items-center gap-1.5">
                                                 <button
                                                     onClick={() => setInviteState({ show: true, projectId: project.id, email: '' })}
+                                                    disabled={!isOwner(project)}
                                                     className="inline-flex items-center justify-center rounded-xl border border-blue-100 bg-blue-50 p-1.5 text-xs text-blue-600 transition hover:bg-blue-100"
                                                     aria-label={`Invite member to project ${project.name}`}
                                                     title="Undang Anggota"
@@ -292,6 +404,7 @@ export default function Projects() {
                                                 </button>
                                                 <button
                                                     onClick={() => openEditProject(project)}
+                                                    disabled={!isOwner(project)}
                                                     className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-1.5 text-xs text-slate-700 transition hover:bg-slate-100"
                                                     aria-label={`Edit project ${project.name}`}
                                                 >
@@ -299,10 +412,19 @@ export default function Projects() {
                                                 </button>
                                                 <button
                                                     onClick={() => triggerDeleteProject(project.id)}
+                                                    disabled={!isOwner(project)}
                                                     className="inline-flex items-center justify-center rounded-xl border border-rose-100 bg-rose-50 p-1.5 text-xs text-rose-600 transition hover:bg-rose-100"
                                                     aria-label={`Hapus project ${project.name}`}
                                                 >
                                                     <Trash2 size={14} />
+                                                </button>
+                                                <button
+                                                    onClick={() => openLeaveProject(project)}
+                                                    className="inline-flex items-center justify-center rounded-xl border border-amber-100 bg-amber-50 p-1.5 text-xs text-amber-700 transition hover:bg-amber-100"
+                                                    aria-label={`Keluar dari project ${project.name}`}
+                                                    title="Keluar Project"
+                                                >
+                                                    <LogOut size={14} />
                                                 </button>
                                             </div>
                                         </div>
@@ -330,18 +452,31 @@ export default function Projects() {
                                                         <span
                                                             key={member.id}
                                                             className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium border ${
-                                                                member.role === 'owner' 
-                                                                    ? 'bg-amber-50 text-amber-700 border-amber-100' 
+                                                                member.role === 'owner'
+                                                                    ? 'bg-amber-50 text-amber-700 border-amber-100'
                                                                     : 'bg-slate-50 text-slate-700 border-slate-100'
                                                             }`}
                                                             title={`${member.name} (${member.email})`}
                                                         >
-                                                            {member.name} {member.role === 'owner' && '👑'}
+                                                            {member.name} {member.role === 'owner' && <Crown size={10} />}
+                                                            {isOwner(project) && member.role !== 'owner' && (
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleKickMember(project.id, member.id);
+                                                                    }}
+                                                                    className="ml-1 text-rose-500 hover:text-rose-700"
+                                                                    title="Kick anggota"
+                                                                >
+                                                                    <UserMinus size={10} />
+                                                                </button>
+                                                            )}
                                                         </span>
                                                     ))}
                                                 </div>
                                             </div>
                                         )}
+
 
                                         {project.links && project.links.length > 0 && (
                                             <div className="mt-2.5 flex items-start gap-1 flex-col">
@@ -525,6 +660,37 @@ export default function Projects() {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {leaveConfirm.show && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-fade-in">
+                    <div className="bg-white rounded-[24px] p-6 max-w-md w-full shadow-2xl border border-slate-100 animate-scale-in">
+                        <h3 className="text-xl font-bold mb-2 text-slate-900">Keluar sebagai Owner?</h3>
+                        <p className="text-slate-500 text-sm mb-4">
+                            Project ini masih punya anggota. Pilih semua anggota dikeluarkan, atau jadikan anggota pertama sebagai owner baru.
+                        </p>
+                        <div className="space-y-3">
+                            <button
+                                onClick={() => handleLeaveProject(leaveConfirm.project, 'transfer_first')}
+                                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-4 py-3 text-sm font-bold text-white hover:bg-blue-700"
+                            >
+                                <Crown size={16} /> Jadikan anggota pertama owner
+                            </button>
+                            <button
+                                onClick={() => handleLeaveProject(leaveConfirm.project, 'kick_all')}
+                                className="flex w-full items-center justify-center gap-2 rounded-2xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700 hover:bg-rose-100"
+                            >
+                                <UserMinus size={16} /> Kick semua anggota
+                            </button>
+                            <button
+                                onClick={() => setLeaveConfirm({ show: false, project: null })}
+                                className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50"
+                            >
+                                Batal
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

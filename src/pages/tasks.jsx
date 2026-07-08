@@ -23,7 +23,7 @@ import {
     GripVertical,
 } from 'lucide-react';
 
-const socket = io('http://localhost:5000');
+const socket = io('https://taskflow-backend-sooty.vercel.app');
 
 function formatDeadline(value) {
     if (!value) return '-';
@@ -98,9 +98,9 @@ export default function Tasks() {
     const handleTaskDragEnd = async () => {
         if (draggedTaskId === null) return;
 
-        const projectActiveTasks = tasks.filter(t => 
-            t.project_id === draggedTaskProjectId && 
-            t.status !== 'completed' && 
+        const projectActiveTasks = tasks.filter(t =>
+            t.project_id === draggedTaskProjectId &&
+            t.status !== 'completed' &&
             !isTaskOverdue(t.due_date)
         );
         const taskIds = projectActiveTasks.map(t => t.id);
@@ -182,14 +182,14 @@ export default function Tasks() {
         // Pasang Telinga (Listener) untuk event 'task_status_changed'
         socket.on('task_status_changed', (data) => {
             console.log("Ada update dari teman tim!", data);
-            
+
             // Ubah state React secara instan TANPA REFRESH
-            setTasks(prevTasks => 
-                prevTasks.map(task => 
+            setTasks(prevTasks =>
+                prevTasks.map(task =>
                     String(task.id) === String(data.taskId) ? { ...task, status: data.newStatus } : task
                 )
             );
-            
+
             // Tampilkan toast notifikasi jika yang mengubah adalah user lain
             if (data.updatedBy && data.updatedBy !== user?.name) {
                 const actionWord = data.newStatus === 'completed' ? 'menyelesaikan' : 'mengaktifkan kembali';
@@ -224,7 +224,7 @@ export default function Tasks() {
             fetchTasks();
             showToast('Berhasil! AI telah menambahkan tugas ke daftarmu.', 'success');
         } catch (error) {
-            showToast('Gagal memproses AI Smart Creation.', 'error');
+            showToast(error.response?.data?.message || 'Gagal memproses AI Smart Creation.', 'error');
         } finally {
             setLoadingGemini(false);
         }
@@ -438,10 +438,10 @@ export default function Tasks() {
 
         const reordered = [...groupOrder];
         const draggedName = reordered[draggedGroupIndex];
-        
+
         reordered.splice(draggedGroupIndex, 1);
         reordered.splice(index, 0, draggedName);
-        
+
         setDraggedGroupIndex(index);
         setGroupOrder(reordered);
     };
@@ -476,15 +476,14 @@ export default function Tasks() {
                 onDragStart={isDraggingActive ? (e) => handleTaskDragStart(e, task.id, pId) : undefined}
                 onDragOver={isDraggingActive ? (e) => handleTaskDragOver(e, task.id, pId) : undefined}
                 onDragEnd={isDraggingActive ? handleTaskDragEnd : undefined}
-                className={`overflow-hidden rounded-2xl border shadow-sm transition-all duration-250 ${
-                    String(task.id) === String(selectedTaskId) 
-                        ? 'border-blue-300 bg-slate-50 ring-1 ring-blue-200' 
-                        : isOverdue 
-                            ? 'border-rose-200 bg-rose-50/20' 
-                            : isCompleted 
-                                ? 'border-slate-100 bg-slate-50/40 opacity-75' 
-                                : 'border-slate-200 bg-white'
-                } ${isDraggingActive ? 'cursor-grab active:cursor-grabbing' : ''} ${draggedTaskId === task.id ? 'opacity-40 scale-[0.99]' : ''}`}
+                className={`overflow-hidden rounded-2xl border shadow-sm transition-all duration-250 ${String(task.id) === String(selectedTaskId)
+                    ? 'border-blue-300 bg-slate-50 ring-1 ring-blue-200'
+                    : isOverdue
+                        ? 'border-rose-200 bg-rose-50/20'
+                        : isCompleted
+                            ? 'border-slate-100 bg-slate-50/40 opacity-75'
+                            : 'border-slate-200 bg-white'
+                    } ${isDraggingActive ? 'cursor-grab active:cursor-grabbing' : ''} ${draggedTaskId === task.id ? 'opacity-40 scale-[0.99]' : ''}`}
             >
                 <div className="p-3.5 sm:p-4">
                     <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -506,13 +505,12 @@ export default function Tasks() {
                                     <h3 className={`text-base font-bold ${isCompleted ? 'line-through text-slate-400' : 'text-slate-900'}`}>
                                         {task.title}
                                     </h3>
-                                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] ${
-                                        isCompleted 
-                                            ? 'bg-emerald-50 text-emerald-700' 
-                                            : isOverdue 
-                                                ? 'bg-rose-50 text-rose-700' 
-                                                : 'bg-blue-50 text-blue-700'
-                                    }`}>
+                                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] ${isCompleted
+                                        ? 'bg-emerald-50 text-emerald-700'
+                                        : isOverdue
+                                            ? 'bg-rose-50 text-rose-700'
+                                            : 'bg-blue-50 text-blue-700'
+                                        }`}>
                                         {isCompleted ? 'Completed' : isOverdue ? 'Overdue' : 'Active'}
                                     </span>
                                 </div>
@@ -530,13 +528,12 @@ export default function Tasks() {
                                         </span>
                                     )}
                                     {task.due_date && (
-                                        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium ring-1 transition-colors ${
-                                            isCompleted 
-                                                ? 'bg-slate-50 text-slate-500 ring-slate-100' 
-                                                : isOverdue 
-                                                    ? 'bg-rose-100 text-rose-700 ring-rose-200 font-bold' 
-                                                    : 'bg-rose-50 text-rose-600 ring-rose-100 hover:bg-rose-100'
-                                        }`}>
+                                        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium ring-1 transition-colors ${isCompleted
+                                            ? 'bg-slate-50 text-slate-500 ring-slate-100'
+                                            : isOverdue
+                                                ? 'bg-rose-100 text-rose-700 ring-rose-200 font-bold'
+                                                : 'bg-rose-50 text-rose-600 ring-rose-100 hover:bg-rose-100'
+                                            }`}>
                                             <Clock3 size={10} />
                                             Deadline: {formatDeadline(task.due_date)}
                                         </span>
@@ -586,7 +583,7 @@ export default function Tasks() {
                             </button>
                         </div>
 
-                         <div className="mt-4">
+                        <div className="mt-4">
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();
@@ -880,7 +877,7 @@ export default function Tasks() {
                                                 {groupName === 'Tugas Lepas (Tanpa Project)' ? 'Tugas Lepas' : `Project: ${groupName}`}
                                             </h3>
                                             <div className="h-px flex-1 bg-slate-200" />
-                                            
+
                                             {/* Drag Handle */}
                                             <div
                                                 className="flex h-8 w-8 cursor-grab active:cursor-grabbing items-center justify-center rounded-lg text-slate-400 hover:bg-slate-200 hover:text-slate-600 transition shrink-0"
@@ -1027,7 +1024,7 @@ export default function Tasks() {
                                 <label className="text-sm font-semibold">Deskripsi</label>
                                 <textarea value={editTaskData.description} onChange={(e) => setEditTaskData({ ...editTaskData, description: e.target.value })} className="mt-2 w-full rounded-2xl border px-3 py-2" rows={4} />
                             </div>
-                             <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-2 gap-3">
                                 <div>
                                     <label className="text-sm font-semibold">Due date</label>
                                     <input type="date" value={editTaskData.due_date || ''} onChange={(e) => setEditTaskData({ ...editTaskData, due_date: e.target.value })} className="mt-2 w-full rounded-2xl border px-3 py-2" />

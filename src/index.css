@@ -178,3 +178,37 @@
   font-weight: 600;
   text-decoration: none;
 }
+
+/* Smartphone responsiveness adjustments for Calendar grid */
+@media (max-width: 768px) {
+  .calendar-shell .fc .fc-daygrid-day-frame {
+    padding: 0.15rem !important;
+    min-height: 4rem !important;
+  }
+  .calendar-shell .fc .fc-col-header-cell-cushion {
+    font-size: 0.65rem !important;
+    padding: 0.4rem 0.1rem !important;
+  }
+  .calendar-shell .fc .fc-daygrid-day-number {
+    font-size: 0.7rem !important;
+    padding: 0.05rem 0.2rem !important;
+  }
+  .calendar-shell .fc .fc-toolbar-title {
+    font-size: 0.9rem !important;
+  }
+  .calendar-shell .fc .fc-button {
+    font-size: 0.7rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+  .calendar-event-wrapper {
+    padding: 0.05rem 0.15rem !important;
+    gap: 0.15rem !important;
+  }
+  .calendar-event-wrapper .event-title {
+    font-size: 0.65rem !important;
+  }
+  .calendar-event-wrapper span:first-child {
+    width: 6px !important;
+    height: 6px !important;
+  }
+}

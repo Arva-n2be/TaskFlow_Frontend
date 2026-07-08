@@ -6,7 +6,13 @@ import { Home, CheckSquare, Folder, User, LogOut, Menu, Calendar, Settings } fro
 export default function Layout() {
     const { user, logout } = useContext(AuthContext);
     const location = useLocation();
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(() => window.innerWidth < 1024);
+
+    const handleMenuClick = () => {
+        if (window.innerWidth < 1024) {
+            setIsCollapsed(true);
+        }
+    };
 
     // Fungsi untuk menandai menu mana yang sedang aktif
     const isActive = (path) => location.pathname === path ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100';
@@ -33,30 +39,38 @@ export default function Layout() {
 
                     {/* Menu Navigasi */}
                     <nav className="flex-1 p-4 space-y-2 mt-4">
-                        <Link to="/dashboard" className={`flex items-center gap-3 p-2.5 rounded-2xl transition-all duration-200 active:scale-95 group font-medium ${isActive('/dashboard')}`}>
+                        <Link to="/dashboard" onClick={handleMenuClick} className={`flex items-center gap-3 p-2.5 rounded-2xl transition-all duration-200 active:scale-95 group font-medium ${isActive('/dashboard')}`}>
                             <Home size={20} className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5" /> Dashboard
                         </Link>
-                        <Link to="/calendar" className={`flex items-center gap-3 p-2.5 rounded-lg transition-all duration-200 active:scale-95 group font-medium ${isActive('/calendar')}`}>
+                        <Link to="/calendar" onClick={handleMenuClick} className={`flex items-center gap-3 p-2.5 rounded-lg transition-all duration-200 active:scale-95 group font-medium ${isActive('/calendar')}`}>
                             <Calendar size={20} className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5" /> Calendar
                         </Link>
-                        <Link to="/tasks" className={`flex items-center gap-3 p-2.5 rounded-2xl transition-all duration-200 active:scale-95 group font-medium ${isActive('/tasks')}`}>
+                        <Link to="/tasks" onClick={handleMenuClick} className={`flex items-center gap-3 p-2.5 rounded-2xl transition-all duration-200 active:scale-95 group font-medium ${isActive('/tasks')}`}>
                             <CheckSquare size={20} className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5" /> Tasks
                         </Link>
-                        <Link to="/projects" className={`flex items-center gap-3 p-2.5 rounded-2xl transition-all duration-200 active:scale-95 group font-medium ${isActive('/projects')}`}>
+                        <Link to="/projects" onClick={handleMenuClick} className={`flex items-center gap-3 p-2.5 rounded-2xl transition-all duration-200 active:scale-95 group font-medium ${isActive('/projects')}`}>
                             <Folder size={20} className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5" /> Projects
                         </Link>
-                        <Link to="/profile" className={`flex items-center gap-3 p-2.5 rounded-2xl transition-all duration-200 active:scale-95 group font-medium ${isActive('/profile')}`}>
+                        <Link to="/profile" onClick={handleMenuClick} className={`flex items-center gap-3 p-2.5 rounded-2xl transition-all duration-200 active:scale-95 group font-medium ${isActive('/profile')}`}>
                             <User size={20} className="transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5" /> Profile
                         </Link>
-                        <Link to="/settings" className={`flex items-center gap-3 p-2.5 rounded-lg transition-all duration-200 active:scale-95 group font-medium ${isActive('/settings')}`}>
+                        <Link to="/settings" onClick={handleMenuClick} className={`flex items-center gap-3 p-2.5 rounded-lg transition-all duration-200 active:scale-95 group font-medium ${isActive('/settings')}`}>
                             <Settings size={20} className="transition-transform duration-300 group-hover:scale-110 group-hover:rotate-45" /> Settings
                         </Link>
                     </nav>
                 </div>
             </aside>
 
+            {/* Backdrop overlay untuk mobile view saat sidebar terbuka */}
+            {!isCollapsed && (
+                <div
+                    onClick={() => setIsCollapsed(true)}
+                    className="fixed inset-0 bg-slate-950/20 backdrop-blur-sm z-10 lg:hidden transition-opacity duration-300"
+                />
+            )}
+
             {/* Area Utama */}
-            <div className={`flex-1 flex flex-col min-h-screen overflow-hidden transition-all duration-300 ${isCollapsed ? 'ml-0' : 'ml-60'}`}>
+            <div className={`flex-1 flex flex-col min-h-screen overflow-hidden transition-all duration-300 ${isCollapsed ? 'ml-0' : 'ml-0 lg:ml-60'}`}>
                 {/* Header Navbar */}
                 <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shadow-sm shrink-0">
                     <div className="flex items-center">

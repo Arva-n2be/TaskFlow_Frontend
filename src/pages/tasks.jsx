@@ -485,27 +485,27 @@ export default function Tasks() {
                             : 'border-slate-200 bg-white'
                     } ${isDraggingActive ? 'cursor-grab active:cursor-grabbing' : ''} ${draggedTaskId === task.id ? 'opacity-40 scale-[0.99]' : ''}`}
             >
-                <div className="p-3.5 sm:p-4">
-                    <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-                        <div className="flex items-start gap-3 min-w-0">
-                            <div className="flex items-center gap-1.5 shrink-0">
+                <div className="p-2.5 sm:p-4">
+                    <div className="flex flex-col gap-2.5 sm:gap-3 lg:flex-row lg:items-center lg:justify-between">
+                        <div className="flex items-start gap-2.5 sm:gap-3 min-w-0">
+                            <div className="flex items-center gap-1 shrink-0">
                                 {isDraggingActive && (
-                                    <GripVertical size={14} className="text-slate-400 cursor-grab shrink-0" />
+                                    <GripVertical className="text-slate-400 cursor-grab shrink-0 w-3 h-3 sm:w-3.5 sm:h-3.5" />
                                 )}
                                 <button onClick={() => toggleTaskStatus(task.id, task.status)} className="mt-0.5 shrink-0 transition-transform active:scale-75 duration-200 hover:scale-110">
                                     {isCompleted ? (
-                                        <CheckCircle className="text-emerald-500 transition group-hover:text-emerald-600 animate-scale-in" size={20} />
+                                        <CheckCircle className="text-emerald-500 transition group-hover:text-emerald-600 animate-scale-in w-4 h-4 sm:w-5 sm:h-5" />
                                     ) : (
-                                        <Circle className={isOverdue ? "text-rose-400" : "text-slate-400"} size={20} />
+                                        <Circle className={isOverdue ? "text-rose-400 w-4 h-4 sm:w-5 sm:h-5" : "text-slate-400 w-4 h-4 sm:w-5 sm:h-5"} />
                                     )}
                                 </button>
                             </div>
                             <div className="min-w-0">
-                                <div className="flex flex-wrap items-center gap-2">
-                                    <h3 className={`text-base font-bold ${isCompleted ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                    <h3 className={`text-sm sm:text-base font-bold ${isCompleted ? 'line-through text-slate-400' : 'text-slate-900'}`}>
                                         {task.title}
                                     </h3>
-                                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] ${isCompleted
+                                    <span className={`rounded-full px-1.5 py-0.5 text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.16em] ${isCompleted
                                         ? 'bg-emerald-50 text-emerald-700'
                                         : isOverdue
                                             ? 'bg-rose-50 text-rose-700'
@@ -514,16 +514,16 @@ export default function Tasks() {
                                         {isCompleted ? 'Completed' : isOverdue ? 'Overdue' : 'Active'}
                                     </span>
                                 </div>
-                                {task.description && <p className="mt-1 text-xs leading-5 text-slate-600">{task.description}</p>}
-                                <div className="mt-2 flex flex-wrap gap-2 text-[11px] text-slate-500">
+                                {task.description && <p className="mt-1 text-[11px] sm:text-xs leading-4 sm:leading-5 text-slate-600">{task.description}</p>}
+                                <div className="mt-2 flex flex-wrap gap-1.5 sm:gap-2 text-[10px] sm:text-[11px] text-slate-500">
                                     {task.project_name && (
                                         <span className="inline-flex items-center gap-1 rounded-full bg-slate-50 px-2 py-0.5 ring-1 ring-slate-200">
-                                            <FolderKanban size={10} />
+                                            <FolderKanban size={9} className="sm:w-2.5 sm:h-2.5" />
                                             {task.project_name}
                                         </span>
                                     )}
                                     {task.assignee_name && (
-                                        <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-700 ring-1 ring-blue-100">
+                                        <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-blue-700 ring-1 ring-blue-100">
                                             Assignee: {task.assignee_name}
                                         </span>
                                     )}
@@ -534,7 +534,7 @@ export default function Tasks() {
                                                 ? 'bg-rose-100 text-rose-700 ring-rose-200 font-bold'
                                                 : 'bg-rose-50 text-rose-600 ring-rose-100 hover:bg-rose-100'
                                             }`}>
-                                            <Clock3 size={10} />
+                                            <Clock3 size={9} className="sm:w-2.5 sm:h-2.5" />
                                             Deadline: {formatDeadline(task.due_date)}
                                         </span>
                                     )}
@@ -542,102 +542,102 @@ export default function Tasks() {
                             </div>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-1.5 lg:justify-end">
+                        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 lg:justify-end">
                             <button
                                 onClick={() => (isExpanded ? setExpandedTaskId(null) : fetchSubtasks(task.id))}
-                                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-white active:scale-95 duration-150 cursor-pointer"
+                                className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-white active:scale-95 duration-150 cursor-pointer"
                             >
-                                <ListTree size={14} /> Subtasks
+                                <ListTree className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Subtasks
                             </button>
                             <button
                                 onClick={() => openEditTask(task)}
-                                className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-1.5 text-xs text-slate-700 transition hover:bg-slate-100 active:scale-90 duration-150 cursor-pointer"
+                                className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-1 sm:p-1.5 text-slate-700 transition hover:bg-slate-100 active:scale-90 duration-150 cursor-pointer"
                                 aria-label={`Edit task ${task.title}`}
                             >
-                                <Pencil size={14} />
+                                <Pencil className="w-3.5 h-3.5" />
                             </button>
                             <button
                                 onClick={() => triggerDeleteTask(task.id)}
-                                className="inline-flex items-center gap-1.5 rounded-xl border border-rose-100 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-100 active:scale-95 duration-150 cursor-pointer"
+                                className="inline-flex items-center gap-1 rounded-xl border border-rose-100 bg-rose-50 px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-semibold text-rose-600 transition hover:bg-rose-100 active:scale-95 duration-150 cursor-pointer"
                             >
-                                <Trash2 size={14} /> Hapus
+                                <Trash2 className="w-3.5 h-3.5" /> Hapus
                             </button>
                         </div>
                     </div>
                 </div>
 
                 {isExpanded && (
-                    <div className="border-t border-slate-100 bg-slate-50 p-5 sm:p-6">
+                    <div className="border-t border-slate-100 bg-slate-50 p-4 sm:p-6">
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <div>
-                                <h4 className="font-bold text-slate-900">Langkah-langkah (Subtasks)</h4>
-                                <p className="mt-1 text-sm text-slate-500">Pecah task ini menjadi langkah yang lebih kecil agar lebih mudah dikerjakan.</p>
+                                <h4 className="font-bold text-slate-900 text-sm sm:text-base">Langkah-langkah (Subtasks)</h4>
+                                <p className="mt-1 text-xs sm:text-sm text-slate-500">Pecah task ini menjadi langkah yang lebih kecil agar lebih mudah dikerjakan.</p>
                             </div>
                             <button
                                 onClick={() => handleBreakdown(task.id)}
                                 disabled={loadingGroq}
-                                className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-70"
+                                className="inline-flex items-center gap-2 rounded-xl sm:rounded-2xl bg-slate-900 px-3 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-70 self-start sm:self-auto"
                             >
-                                {loadingGroq ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bot className="h-4 w-4" />}
+                                {loadingGroq ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Bot className="h-3.5 w-3.5" />}
                                 {loadingGroq ? 'Groq Memproses...' : 'AI Task Breakdown'}
                             </button>
                         </div>
 
-                        <div className="mt-4">
+                        <div className="mt-3.5 sm:mt-4">
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     handleAddSubtask(task.id);
                                 }}
-                                className="mb-4 flex gap-2"
+                                className="mb-3 sm:mb-4 flex gap-2"
                             >
                                 <input
                                     type="text"
-                                    className="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                    className="flex-1 rounded-xl sm:rounded-2xl border border-slate-200 bg-white px-3 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                                     placeholder="Tambah subtask manual..."
                                     value={newSubtaskTitle}
                                     onChange={(e) => setNewSubtaskTitle(e.target.value)}
                                 />
                                 <button
                                     type="submit"
-                                    className="inline-flex items-center gap-1.5 rounded-2xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 cursor-pointer"
+                                    className="inline-flex items-center gap-1.5 rounded-xl sm:rounded-2xl bg-blue-600 px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold text-white transition hover:bg-blue-700 cursor-pointer"
                                 >
-                                    <Plus size={16} /> Tambah
+                                    <Plus className="w-3.5 h-3.5" /> Tambah
                                 </button>
                             </form>
 
                             {loadingGroq ? (
-                                <p className="rounded-2xl border border-dashed border-slate-200 bg-white p-4 text-sm text-slate-500 italic">
+                                <p className="rounded-xl sm:rounded-2xl border border-dashed border-slate-200 bg-white p-3.5 sm:p-4 text-xs sm:text-sm text-slate-500 italic">
                                     Menghubungkan ke Groq...
                                 </p>
                             ) : subtasks.length === 0 ? (
-                                <p className="rounded-2xl border border-dashed border-slate-200 bg-white p-4 text-sm text-slate-500 italic">
-                                    Belum ada subtask. Tambah manual di atas atau gunakan AI Task Breakdown di kanan atas.
+                                <p className="rounded-xl sm:rounded-2xl border border-dashed border-slate-200 bg-white p-3.5 sm:p-4 text-xs sm:text-sm text-slate-500 italic">
+                                    Belum ada subtask. Tambah manual di atas atau gunakan AI Task Breakdown di kiri atas.
                                 </p>
                             ) : (
-                                <ul className="space-y-2">
+                                <ul className="space-y-1.5 sm:space-y-2">
                                     {subtasks.map((sub) => {
                                         const isSubCompleted = sub.is_completed === 1 || sub.is_completed === true;
                                         const isSubEditing = editingSubtaskId === sub.id;
 
                                         return (
-                                            <li key={sub.id} className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:bg-slate-50/50">
+                                            <li key={sub.id} className="flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border border-slate-200 bg-white px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-slate-700 shadow-sm transition hover:bg-slate-50/50">
                                                 <button
                                                     type="button"
                                                     onClick={() => handleToggleSubtaskStatus(task.id, sub.id, isSubCompleted)}
                                                     className="shrink-0 cursor-pointer"
                                                 >
                                                     {isSubCompleted ? (
-                                                        <CheckCircle className="text-emerald-500" size={18} />
+                                                        <CheckCircle className="text-emerald-500 w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                                                     ) : (
-                                                        <Circle className="text-slate-400" size={18} />
+                                                        <Circle className="text-slate-400 w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                                                     )}
                                                 </button>
                                                 {isSubEditing ? (
-                                                    <div className="flex flex-1 gap-2">
+                                                    <div className="flex flex-1 gap-1.5 sm:gap-2">
                                                         <input
                                                             type="text"
-                                                            className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1 text-sm text-slate-900 outline-none"
+                                                            className="flex-1 rounded-lg sm:rounded-xl border border-slate-200 bg-slate-50 px-2 py-0.5 sm:px-3 sm:py-1 text-xs sm:text-sm text-slate-900 outline-none"
                                                             value={editingSubtaskTitle}
                                                             onChange={(e) => setEditingSubtaskTitle(e.target.value)}
                                                             onKeyDown={(e) => {
@@ -648,9 +648,9 @@ export default function Tasks() {
                                                         <button
                                                             type="button"
                                                             onClick={() => handleUpdateSubtaskTitle(task.id, sub.id)}
-                                                            className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition cursor-pointer"
+                                                            className="p-1 text-emerald-600 hover:bg-emerald-50 rounded-lg transition cursor-pointer"
                                                         >
-                                                            <Check size={16} />
+                                                            <Check className="w-3.5 h-3.5" />
                                                         </button>
                                                         <button
                                                             type="button"
@@ -658,35 +658,35 @@ export default function Tasks() {
                                                                 setEditingSubtaskId(null);
                                                                 setEditingSubtaskTitle('');
                                                             }}
-                                                            className="p-1.5 text-slate-500 hover:bg-slate-100 rounded-lg transition cursor-pointer"
+                                                            className="p-1 text-slate-500 hover:bg-slate-100 rounded-lg transition cursor-pointer"
                                                         >
-                                                            <X size={16} />
+                                                            <X className="w-3.5 h-3.5" />
                                                         </button>
                                                     </div>
                                                 ) : (
                                                     <>
-                                                        <span className={`flex-1 ${isSubCompleted ? 'line-through text-slate-400 font-medium' : 'text-slate-700 font-medium'}`}>
+                                                        <span className={`flex-1 min-w-0 truncate ${isSubCompleted ? 'line-through text-slate-400 font-medium' : 'text-slate-700 font-medium'}`}>
                                                             {sub.title}
                                                         </span>
-                                                        <div className="flex items-center gap-1 opacity-60 hover:opacity-100 transition">
+                                                        <div className="flex items-center gap-0.5 sm:gap-1 opacity-60 hover:opacity-100 transition">
                                                             <button
                                                                 type="button"
                                                                 onClick={() => {
                                                                     setEditingSubtaskId(sub.id);
                                                                     setEditingSubtaskTitle(sub.title);
                                                                 }}
-                                                                className="p-1.5 text-slate-500 hover:bg-slate-150 rounded-lg transition cursor-pointer"
+                                                                className="p-1 text-slate-500 hover:bg-slate-150 rounded-lg transition cursor-pointer"
                                                                 aria-label="Edit subtask"
                                                             >
-                                                                <Pencil size={14} />
+                                                                <Pencil className="w-3.5 h-3.5" />
                                                             </button>
                                                             <button
                                                                 type="button"
                                                                 onClick={() => handleDeleteSubtask(task.id, sub.id)}
-                                                                className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition cursor-pointer"
+                                                                className="p-1 text-rose-500 hover:bg-rose-50 rounded-lg transition cursor-pointer"
                                                                 aria-label="Hapus subtask"
                                                             >
-                                                                <Trash2 size={14} />
+                                                                <Trash2 className="w-3.5 h-3.5" />
                                                             </button>
                                                         </div>
                                                     </>
@@ -729,41 +729,41 @@ export default function Tasks() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-3 md:gap-4">
-                        <div className="rounded-[28px] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p className="text-xs uppercase tracking-[0.24em] text-slate-300">Total</p>
-                            <p className="mt-3 text-3xl font-bold">{tasks.length}</p>
+                    <div className="grid grid-cols-3 gap-2 md:gap-4">
+                        <div className="rounded-2xl border border-white/10 bg-white/8 p-3 sm:p-5 backdrop-blur-sm">
+                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.24em] text-slate-300">Total</p>
+                            <p className="mt-1.5 sm:mt-3 text-xl sm:text-3xl font-bold">{tasks.length}</p>
                         </div>
-                        <div className="rounded-[28px] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p className="text-xs uppercase tracking-[0.24em] text-slate-300">Aktif</p>
-                            <p className="mt-3 text-3xl font-bold">{totalPending}</p>
+                        <div className="rounded-2xl border border-white/10 bg-white/8 p-3 sm:p-5 backdrop-blur-sm">
+                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.24em] text-slate-300">Aktif</p>
+                            <p className="mt-1.5 sm:mt-3 text-xl sm:text-3xl font-bold">{totalPending}</p>
                         </div>
-                        <div className="rounded-[28px] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p className="text-xs uppercase tracking-[0.24em] text-slate-300">Selesai</p>
-                            <p className="mt-3 text-3xl font-bold">{totalCompleted}</p>
+                        <div className="rounded-2xl border border-white/10 bg-white/8 p-3 sm:p-5 backdrop-blur-sm">
+                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.24em] text-slate-300">Selesai</p>
+                            <p className="mt-1.5 sm:mt-3 text-xl sm:text-3xl font-bold">{totalCompleted}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Form AI Task Builder */}
-            <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="rounded-2xl sm:rounded-[32px] border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                     <div>
-                        <h2 className="text-xl font-semibold text-slate-900">AI Task Builder</h2>
-                        <p className="mt-1 text-sm text-slate-500">Tulis rencana singkat, lalu biarkan AI menyusunnya menjadi task yang lebih rapi.</p>
+                        <h2 className="text-lg sm:text-xl font-semibold text-slate-900">AI Task Builder</h2>
+                        <p className="mt-1 text-xs sm:text-sm text-slate-500">Tulis rencana singkat, lalu biarkan AI menyusunnya menjadi task yang lebih rapi.</p>
                     </div>
-                    <div className="inline-flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
-                        <Bot className="text-blue-600" size={18} /> Smart creation + breakdown
+                    <div className="inline-flex items-center gap-1.5 rounded-2xl bg-slate-50 px-3 py-2 text-xs sm:text-sm text-slate-600 self-start lg:self-auto">
+                        <Bot className="text-blue-600" size={16} /> Smart creation + breakdown
                     </div>
                 </div>
 
-                <div className="mt-6 rounded-[28px] border border-slate-200 bg-slate-50 p-5">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="mt-4 sm:mt-6 rounded-2xl sm:rounded-[28px] border border-slate-200 bg-slate-50 p-3.5 sm:p-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
                         <div>
-                            <label className="block text-sm font-semibold text-slate-700 mb-2">Project tujuan</label>
+                            <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1 sm:mb-2">Project tujuan</label>
                             <select
-                                className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                className="w-full rounded-2xl sm:rounded-3xl border border-slate-200 bg-white px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-slate-700 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                                 value={selectedProjectId}
                                 onChange={(e) => setSelectedProjectId(e.target.value)}
                             >
@@ -774,9 +774,9 @@ export default function Tasks() {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-slate-700 mb-2">Assignee (Penanggung Jawab)</label>
+                            <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1 sm:mb-2">Assignee (Penanggung Jawab)</label>
                             <select
-                                className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:opacity-60"
+                                className="w-full rounded-2xl sm:rounded-3xl border border-slate-200 bg-white px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-slate-700 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:opacity-60"
                                 value={selectedAssigneeId}
                                 onChange={(e) => setSelectedAssigneeId(e.target.value)}
                                 disabled={!selectedProjectId}
@@ -789,9 +789,9 @@ export default function Tasks() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-4 lg:flex-row">
+                    <div className="flex flex-col gap-3 lg:flex-row">
                         <textarea
-                            className="flex-1 min-h-[140px] resize-none rounded-3xl border border-slate-200 bg-white px-4 py-4 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                            className="flex-1 min-h-[85px] sm:min-h-[140px] resize-none rounded-2xl sm:rounded-3xl border border-slate-200 bg-white px-3 py-3 sm:px-4 sm:py-4 text-xs sm:text-sm text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                             rows="2"
                             placeholder="Contoh: Besok revisi skripsi bab 1 pagi, sore olahraga 30 menit, lalu rapikan catatan..."
                             value={prompt}
@@ -800,9 +800,9 @@ export default function Tasks() {
                         <button
                             onClick={handleSmartCreation}
                             disabled={loadingGemini}
-                            className="inline-flex w-full items-center justify-center gap-2 rounded-3xl bg-blue-600 px-6 py-4 text-white font-semibold shadow-lg shadow-blue-500/10 transition hover:-translate-y-0.5 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70 lg:w-auto"
+                            className="inline-flex w-full items-center justify-center gap-2 rounded-2xl sm:rounded-3xl bg-blue-600 px-4 py-2.5 sm:px-6 sm:py-4 text-white font-semibold shadow-lg shadow-blue-500/10 transition hover:-translate-y-0.5 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70 lg:w-auto text-xs sm:text-sm"
                         >
-                            {loadingGemini ? <Loader2 className="animate-spin" /> : <Bot />}
+                            {loadingGemini ? <Loader2 className="animate-spin h-4 w-4" /> : <Bot size={16} />}
                             {loadingGemini ? 'AI Berpikir...' : 'Generate AI'}
                         </button>
                     </div>
@@ -812,10 +812,10 @@ export default function Tasks() {
             <div className={`grid gap-6 ${selectedTask ? 'xl:grid-cols-[minmax(0,1fr)_320px]' : 'grid-cols-1'}`}>
                 <div className="space-y-6 min-w-0">
                     <div className="space-y-6">
-                        <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-slate-200 bg-white px-6 py-4 shadow-sm">
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-2xl sm:rounded-3xl border border-slate-200 bg-white px-4 py-3.5 sm:px-6 sm:py-4 shadow-sm">
                             <div className="flex items-center gap-2">
-                                <FolderKanban className="text-blue-600" size={20} />
-                                <span className="font-bold text-slate-800">Filter Berdasarkan Project</span>
+                                <FolderKanban className="text-blue-600 shrink-0 w-4 h-4 sm:w-5 sm:h-5" />
+                                <span className="font-bold text-slate-800 text-xs sm:text-base">Filter Berdasarkan Project</span>
                             </div>
                             <select
                                 value={filterProjectId || ''}
@@ -828,7 +828,7 @@ export default function Tasks() {
                                     }
                                     navigate(`/tasks?${params.toString()}`);
                                 }}
-                                className="rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 cursor-pointer"
+                                className="rounded-xl sm:rounded-2xl border border-slate-200 bg-white px-3 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-semibold text-slate-700 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 cursor-pointer w-full sm:w-auto"
                             >
                                 <option value="">Semua Project</option>
                                 {projects.map((p) => (
@@ -838,14 +838,14 @@ export default function Tasks() {
                         </div>
 
                         {(filterProjectId || (filterType && filterType !== 'all')) && (
-                            <div className="flex items-center justify-between rounded-3xl bg-blue-50 border border-blue-100 px-6 py-4 text-blue-800 shadow-sm animate-fade-in">
-                                <span className="text-sm font-semibold">
+                            <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between rounded-2xl sm:rounded-3xl bg-blue-50 border border-blue-100 px-4 py-3 sm:px-6 sm:py-4 text-blue-800 shadow-sm animate-fade-in">
+                                <span className="text-xs sm:text-sm font-semibold">
                                     Menampilkan {filterType === 'active' ? 'tugas aktif' : filterType === 'completed' ? 'tugas selesai' : filterType === 'overdue' ? 'tugas terlambat' : 'tugas'}
                                     {filterProjectId && <> untuk project: <strong className="text-blue-900">{filterProjectName || 'Loading...'}</strong></>}
                                 </span>
                                 <button
                                     onClick={() => navigate('/tasks')}
-                                    className="rounded-full bg-white px-4 py-2 text-xs font-bold text-blue-700 shadow-sm border border-blue-200 transition hover:bg-slate-50 cursor-pointer"
+                                    className="rounded-full bg-white px-3 py-1.5 text-[11px] sm:text-xs font-bold text-blue-700 shadow-sm border border-blue-200 transition hover:bg-slate-50 cursor-pointer w-full sm:w-auto text-center"
                                 >
                                     Tampilkan Semua
                                 </button>

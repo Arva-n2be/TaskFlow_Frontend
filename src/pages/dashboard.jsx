@@ -106,26 +106,26 @@ export default function Dashboard() {
                             {currentDateTime.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} • {currentDateTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-5">
-                        <div onClick={() => navigate('/tasks?filter=all')} className="rounded-3xl bg-white/10 border border-white/10 p-4 md:p-5 backdrop-blur-sm hover:scale-105 hover:bg-white/15 hover:shadow-lg hover:border-white/20 transition-all duration-350 cursor-pointer group">
-                            <div className="inline-flex items-center justify-center h-10 w-10 rounded-xl bg-white/15 text-blue-200 mb-2 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"><LayoutIcon size={20} /></div>
-                            <p className="text-xs text-slate-300">Total Tasks</p>
-                            <p className="text-2xl font-bold mt-1">{stats.task_stats.total}</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-3 mt-4">
+                        <div onClick={() => navigate('/tasks?filter=all')} className="rounded-2xl sm:rounded-3xl bg-white/10 border border-white/10 p-3 sm:p-5 backdrop-blur-sm hover:scale-105 hover:bg-white/15 hover:shadow-lg hover:border-white/20 transition-all duration-350 cursor-pointer group">
+                            <div className="inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-lg sm:rounded-xl bg-white/15 text-blue-200 mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"><LayoutIcon className="w-4 h-4 sm:w-5 sm:h-5" /></div>
+                            <p className="text-[10px] sm:text-xs text-slate-300">Total Tasks</p>
+                            <p className="text-lg sm:text-2xl font-bold mt-0.5 sm:mt-1">{stats.task_stats.total}</p>
                         </div>
-                        <div onClick={() => navigate('/tasks?filter=active')} className="rounded-3xl bg-white/10 border border-white/10 p-4 md:p-5 backdrop-blur-sm hover:scale-105 hover:bg-white/15 hover:shadow-lg hover:border-white/20 transition-all duration-350 cursor-pointer group">
-                            <div className="inline-flex items-center justify-center h-10 w-10 rounded-xl bg-white/15 text-yellow-200 mb-2 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"><Clock size={20} /></div>
-                            <p className="text-xs text-slate-300">Task Aktif</p>
-                            <p className="text-2xl font-bold mt-1">{stats.task_stats.active}</p>
+                        <div onClick={() => navigate('/tasks?filter=active')} className="rounded-2xl sm:rounded-3xl bg-white/10 border border-white/10 p-3 sm:p-5 backdrop-blur-sm hover:scale-105 hover:bg-white/15 hover:shadow-lg hover:border-white/20 transition-all duration-350 cursor-pointer group">
+                            <div className="inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-lg sm:rounded-xl bg-white/15 text-yellow-200 mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"><Clock className="w-4 h-4 sm:w-5 sm:h-5" /></div>
+                            <p className="text-[10px] sm:text-xs text-slate-300">Task Aktif</p>
+                            <p className="text-lg sm:text-2xl font-bold mt-0.5 sm:mt-1">{stats.task_stats.active}</p>
                         </div>
-                        <div onClick={() => navigate('/tasks?filter=completed')} className="rounded-3xl bg-white/10 border border-white/10 p-4 md:p-5 backdrop-blur-sm hover:scale-105 hover:bg-white/15 hover:shadow-lg hover:border-white/20 transition-all duration-350 cursor-pointer group">
-                            <div className="inline-flex items-center justify-center h-10 w-10 rounded-xl bg-white/15 text-emerald-200 mb-2 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"><CheckCircle size={20} /></div>
-                            <p className="text-xs text-slate-300">Task Selesai</p>
-                            <p className="text-2xl font-bold mt-1">{stats.task_stats.completed}</p>
+                        <div onClick={() => navigate('/tasks?filter=completed')} className="rounded-2xl sm:rounded-3xl bg-white/10 border border-white/10 p-3 sm:p-5 backdrop-blur-sm hover:scale-105 hover:bg-white/15 hover:shadow-lg hover:border-white/20 transition-all duration-350 cursor-pointer group">
+                            <div className="inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-lg sm:rounded-xl bg-white/15 text-emerald-200 mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"><CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" /></div>
+                            <p className="text-[10px] sm:text-xs text-slate-300">Task Selesai</p>
+                            <p className="text-lg sm:text-2xl font-bold mt-0.5 sm:mt-1">{stats.task_stats.completed}</p>
                         </div>
-                        <div onClick={() => navigate('/tasks?filter=overdue')} className="rounded-3xl bg-white/10 border border-white/10 p-4 md:p-5 backdrop-blur-sm hover:scale-105 hover:bg-white/15 hover:shadow-lg hover:border-white/20 transition-all duration-350 cursor-pointer group">
-                            <div className="inline-flex items-center justify-center h-10 w-10 rounded-xl bg-white/15 text-rose-200 mb-2 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"><AlertCircle size={20} /></div>
-                            <p className="text-xs text-slate-300">Task Terlambat</p>
-                            <p className="text-2xl font-bold mt-1">{stats.task_stats.overdue}</p>
+                        <div onClick={() => navigate('/tasks?filter=overdue')} className="rounded-2xl sm:rounded-3xl bg-white/10 border border-white/10 p-3 sm:p-5 backdrop-blur-sm hover:scale-105 hover:bg-white/15 hover:shadow-lg hover:border-white/20 transition-all duration-350 cursor-pointer group">
+                            <div className="inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-lg sm:rounded-xl bg-white/15 text-rose-200 mb-1.5 sm:mb-2 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"><AlertCircle className="w-4 h-4 sm:w-5 sm:h-5" /></div>
+                            <p className="text-[10px] sm:text-xs text-slate-300">Task Terlambat</p>
+                            <p className="text-lg sm:text-2xl font-bold mt-0.5 sm:mt-1">{stats.task_stats.overdue}</p>
                         </div>
                     </div>
                 </div>

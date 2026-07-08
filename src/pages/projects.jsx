@@ -255,18 +255,18 @@ export default function Projects() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-3 md:gap-4">
-                        <div className="rounded-[28px] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p className="text-xs uppercase tracking-[0.24em] text-slate-300">Total</p>
-                            <p className="mt-3 text-3xl font-bold">{projects.length}</p>
+                    <div className="grid grid-cols-3 gap-2 md:gap-4">
+                        <div className="rounded-2xl border border-white/10 bg-white/8 p-3 sm:p-5 backdrop-blur-sm">
+                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.24em] text-slate-300">Total</p>
+                            <p className="mt-1.5 sm:mt-3 text-xl sm:text-3xl font-bold">{projects.length}</p>
                         </div>
-                        <div className="rounded-[28px] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p className="text-xs uppercase tracking-[0.24em] text-slate-300">Rata-rata</p>
-                            <p className="mt-3 text-3xl font-bold">{totalProgress}%</p>
+                        <div className="rounded-2xl border border-white/10 bg-white/8 p-3 sm:p-5 backdrop-blur-sm">
+                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.24em] text-slate-300">Rata-rata</p>
+                            <p className="mt-1.5 sm:mt-3 text-xl sm:text-3xl font-bold">{totalProgress}%</p>
                         </div>
-                        <div className="rounded-[28px] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p className="text-xs uppercase tracking-[0.24em] text-slate-300">Deadline</p>
-                            <p className="mt-3 text-3xl font-bold">{dueSoonCount}</p>
+                        <div className="rounded-2xl border border-white/10 bg-white/8 p-3 sm:p-5 backdrop-blur-sm">
+                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.24em] text-slate-300">Deadline</p>
+                            <p className="mt-1.5 sm:mt-3 text-xl sm:text-3xl font-bold">{dueSoonCount}</p>
                         </div>
                     </div>
                 </div>
@@ -308,23 +308,23 @@ export default function Projects() {
             )}
 
             {/* Form Buat Project Baru */}
-            <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="rounded-2xl sm:rounded-[32px] border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                     <div>
-                        <h2 className="text-xl font-semibold text-slate-900">Buat Project Baru</h2>
-                        <p className="mt-1 text-sm text-slate-500">Isi nama, deskripsi, dan deadline agar project lebih mudah dipantau.</p>
+                        <h2 className="text-lg sm:text-xl font-semibold text-slate-900">Buat Project Baru</h2>
+                        <p className="mt-1 text-xs sm:text-sm text-slate-500">Isi nama, deskripsi, dan deadline agar project lebih mudah dipantau.</p>
                     </div>
-                    <div className="inline-flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
-                        <Plus className="text-blue-600" size={18} /> Form project
+                    <div className="inline-flex items-center gap-1.5 rounded-2xl bg-slate-50 px-3 py-2 text-xs sm:text-sm text-slate-600 self-start lg:self-auto">
+                        <Plus className="text-blue-600" size={16} /> Form project
                     </div>
                 </div>
 
-                <form onSubmit={handleCreateProject} className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-4">
+                <form onSubmit={handleCreateProject} className="mt-4 sm:mt-6 grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-4">
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-slate-700">Nama Project</label>
+                        <label className="mb-1 sm:mb-2 block text-xs sm:text-sm font-semibold text-slate-700">Nama Project</label>
                         <input
                             type="text"
-                            className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                            className="w-full rounded-2xl sm:rounded-3xl border border-slate-200 bg-slate-50 px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                             placeholder="Contoh: Skripsi Taskflow"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -332,20 +332,20 @@ export default function Projects() {
                         />
                     </div>
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-slate-700">Deskripsi Singkat</label>
+                        <label className="mb-1 sm:mb-2 block text-xs sm:text-sm font-semibold text-slate-700">Deskripsi Singkat</label>
                         <input
                             type="text"
-                            className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                            className="w-full rounded-2xl sm:rounded-3xl border border-slate-200 bg-slate-50 px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                             placeholder="Target selesai bulan depan..."
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </div>
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-slate-700">Target / Deadline</label>
+                        <label className="mb-1 sm:mb-2 block text-xs sm:text-sm font-semibold text-slate-700">Target / Deadline</label>
                         <input
                             type="date"
-                            className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                            className="w-full rounded-2xl sm:rounded-3xl border border-slate-200 bg-slate-50 px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                             value={deadline}
                             onChange={(e) => setDeadline(e.target.value)}
                         />
@@ -353,9 +353,9 @@ export default function Projects() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="inline-flex w-full items-center justify-center gap-2 rounded-3xl bg-blue-600 px-5 py-3 text-white font-semibold shadow-lg shadow-blue-500/10 transition hover:-translate-y-0.5 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-2xl sm:rounded-3xl bg-blue-600 px-4 py-2.5 sm:px-5 sm:py-3 text-white font-semibold shadow-lg shadow-blue-500/10 transition hover:-translate-y-0.5 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70 text-xs sm:text-sm lg:self-end"
                     >
-                        {loading ? 'Menyimpan...' : <><Plus size={18} /> Buat Project</>}
+                        {loading ? 'Menyimpan...' : <><Plus size={16} /> Buat Project</>}
                     </button>
                 </form>
             </div>

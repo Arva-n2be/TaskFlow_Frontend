@@ -235,18 +235,18 @@ export default function CalendarPage() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-3 md:gap-4">
-                        <div className="rounded-[28px] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p className="text-xs uppercase tracking-[0.24em] text-slate-300">Total</p>
-                            <p className="mt-3 text-3xl font-bold">{events.length}</p>
+                    <div className="grid grid-cols-3 gap-2 md:gap-4">
+                        <div className="rounded-2xl border border-white/10 bg-white/8 p-3 sm:p-5 backdrop-blur-sm">
+                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.24em] text-slate-300">Total</p>
+                            <p className="mt-1.5 sm:mt-3 text-xl sm:text-3xl font-bold">{events.length}</p>
                         </div>
-                        <div className="rounded-[28px] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p className="text-xs uppercase tracking-[0.24em] text-slate-300">Task</p>
-                            <p className="mt-3 text-3xl font-bold">{totalTasks}</p>
+                        <div className="rounded-2xl border border-white/10 bg-white/8 p-3 sm:p-5 backdrop-blur-sm">
+                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.24em] text-slate-300">Task</p>
+                            <p className="mt-1.5 sm:mt-3 text-xl sm:text-3xl font-bold">{totalTasks}</p>
                         </div>
-                        <div className="rounded-[28px] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p className="text-xs uppercase tracking-[0.24em] text-slate-300">Project</p>
-                            <p className="mt-3 text-3xl font-bold">{totalProjects}</p>
+                        <div className="rounded-2xl border border-white/10 bg-white/8 p-3 sm:p-5 backdrop-blur-sm">
+                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.24em] text-slate-300">Project</p>
+                            <p className="mt-1.5 sm:mt-3 text-xl sm:text-3xl font-bold">{totalProjects}</p>
                         </div>
                     </div>
                 </div>

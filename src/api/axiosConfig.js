@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://taskflow-backend-sooty.vercel.app',
+    baseURL: 'https://taskflow-backend-sooty.vercel.app/api',
 });
 
 // Interceptor: Otomatis sisipkan Token ke setiap request ke backend
